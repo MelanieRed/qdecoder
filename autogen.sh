@@ -1,6 +1,3 @@
-#!/bin/sh -e
+#!/bin/sh
 
-autoreconf -fi;
-rm -Rf autom4te*.cache;
-
-./configure $*
+autoreconf --force --install

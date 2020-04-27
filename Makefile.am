@@ -28,50 +28,7 @@
 ## $Id: Makefile.in 636 2012-05-07 23:40:43Z seungyoung.kim $
 ################################################################################
 
-prefix		= @prefix@
-exec_prefix	= @exec_prefix@
+SUBDIRS = src examples
 
-## Compiler options
-CC	= @CC@
-CFLAGS	= @CFLAGS@
-CPPFLAGS= -I../src/ @CPPFLAGS@
-LIBS	= ../src/libqdecoder.a @LIBS@
+ACLOCAL_AMFLAGS  = -I m4
 
-TARGETS	= query.cgi cookie.cgi multivalue.cgi upload.cgi uploadfile.cgi download.cgi session.cgi
-
-## Main
-all:	${TARGETS}
-
-query.cgi: query.o
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ query.o ${LIBS}
-
-cookie.cgi: cookie.o
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ cookie.o ${LIBS}
-
-multivalue.cgi:	multivalue.o
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ multivalue.o ${LIBS}
-
-upload.cgi: upload.o
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ upload.o ${LIBS}
-	chmod 6755 upload.cgi
-
-uploadfile.cgi: uploadfile.o
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ uploadfile.o ${LIBS}
-	chmod 6755 uploadfile.cgi
-	mkdir -p -m 777 upload tmp
-
-download.cgi: download.o
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ download.o ${LIBS}
-
-session.cgi: session.o
-	${CC} ${CFLAGS} ${CPPFLAGS} -o $@ session.o ${LIBS}
-	chmod 6755 session.cgi
-
-## Clear Module
-clean:
-	rm -f *.o ${TARGETS}
-	rm -rf upload tmp
-
-## Compile Module
-.c.o:
-	${CC} ${CFLAGS} ${CPPFLAGS} -c -o $@ $<

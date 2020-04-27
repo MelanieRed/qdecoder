@@ -77,6 +77,10 @@ AC_DEFUN([Q_ARG_DISABLE], [
 
 ## Initialize
 AC_INIT([qDecoder], [12 RELEASE], [http://www.qdecoder.org/])
+LT_INIT
+AM_INIT_AUTOMAKE([subdir-objects])
+
+AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_FILES([Makefile src/qdecoder.pc src/Makefile examples/Makefile])
@@ -107,16 +111,8 @@ if test $ac_cv_prog_cc_c99 = no; then
 fi
 
 AC_PROG_INSTALL
-AC_PROG_LN_S
-AC_PROG_MAKE_SET
-AC_PROG_RANLIB
-
-AC_PATH_PROG(AR, ar)
-AC_PATH_PROG(CHMOD, chmod)
-AC_PATH_PROG(LD, ld)
-AC_PATH_PROG(RM, rm)
-AC_PATH_PROG(MKDIR, mkdir)
-AC_PATH_PROG(RMDIR, rmdir)
+AM_PROG_CC_C_O
+AM_PROG_LIBTOOL(libtool)
 
 ## Checks for header files.
 AC_HEADER_STDC
@@ -135,7 +131,7 @@ AC_TYPE_OFF_T
 
 AC_ARG_ENABLE([fastcgi],[AS_HELP_STRING([--enable-fastcgi=/FASTCGI_INCLUDE_DIR_PATH/], [enable FastCGI supports])],[enableval=yes],[enableval=no])
 if test "$enableval" = yes; then
-	AC_CHECK_FILE([$enable_fastcgi/fcgi_stdio.h],[enableval=yes],[enableval=no])
+	AC_CHECK_HEADER([$enable_fastcgi/fcgi_stdio.h],[enableval=yes],[enableval=no])
 	if test "$enableval" = yes; then
 		AC_MSG_NOTICE(['fastcgi' feature is enabled])
 		CPPFLAGS="$CPPFLAGS -DENABLE_FASTCGI -I$enable_fastcgi"
@@ -144,6 +140,9 @@ if test "$enableval" = yes; then
 		AC_MSG_FAILURE([can't find 'fcgi_stdio.h' header file in '$enable_fastcgi' directory. can't enable fastcgi support.])
 	fi
 fi
+
+AC_ARG_ENABLE([examples], [AS_HELP_STRING([--enable-examples], [enable building example binaries])])
+AM_CONDITIONAL([EXAMPLES_ENABLED], [test "x$enable_examples" = "xyes"])
 
 Q_ARG_ENABLE([debug], [enable debugging output (development mode)], [-DBUILD_DEBUG])
 if test "$enableval" = yes; then
@@ -158,3 +157,4 @@ AC_MSG_NOTICE([LIBS $LIBS])
 
 ## Create Makefile
 AC_OUTPUT
+

@@ -28,35 +28,29 @@
 ## $Id: Makefile.in 636 2012-05-07 23:40:43Z seungyoung.kim $
 ################################################################################
 
-RM	= @RM@
+if EXAMPLES_ENABLED
+bin_PROGRAMS = cookie.cgi download.cgi multivalue.cgi query.cgi session.cgi upload.cgi uploadfile.cgi
 
-all:
-	@for DIR in src; do \
-		echo "===> $${DIR}"; \
-		(cd $${DIR}; make all); \
-		echo "<=== $${DIR}"; \
-	done
+AM_CPPFLAGS = -I$(top_srcdir)/src
 
-install:
-	(cd src/; make install)
+cookie_cgi_SOURCES = cookie.c
+cookie_cgi_LDADD = ../src/libqdecoder.la
 
-deinstall: uninstall
-uninstall:
-	(cd src/; make deinstall)
+download_cgi_SOURCES = download.c
+download_cgi_LDADD = ../src/libqdecoder.la
 
-clean:
-	@for DIR in src; do \
-		echo "===> $${DIR}"; \
-		(cd $${DIR}; make clean); \
-		echo "<=== $${DIR}"; \
-	done
+multivalue_cgi_SOURCES = multivalue.c
+multivalue_cgi_LDADD = ../src/libqdecoder.la
 
-distclean: clean
-	@for DIR in src examples; do \
-		echo "===> $${DIR}"; \
-		(cd $${DIR}; make clean; ${RM} -f Makefile); \
-		echo "<=== $${DIR}"; \
-	done
-	${RM} -rf autom4te.cache
-	${RM} -f configure.lineno config.log config.status config.h *~
-	${RM} -f Makefile src/qdecoder.pc
+query_cgi_SOURCES = query.c
+query_cgi_LDADD = ../src/libqdecoder.la
+
+session_cgi_SOURCES = session.c
+session_cgi_LDADD = ../src/libqdecoder.la
+
+upload_cgi_SOURCES = upload.c
+upload_cgi_LDADD = ../src/libqdecoder.la
+
+uploadfile_cgi_SOURCES = uploadfile.c
+uploadfile_cgi_LDADD = ../src/libqdecoder.la
+endif
